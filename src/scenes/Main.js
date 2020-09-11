@@ -1,33 +1,55 @@
+/* eslint-disable no-unused-vars */
 import Phaser from 'phaser'
-import logoImg from '../images/logo.png'
-import bg from '../images/sky.png'
+import bg from '../images/bgs/bg2.png'
+import SpaceChip from '../classes/SpaceShip'
 
 export default class Main extends Phaser.Scene {
   constructor () {
     super('Main')
+    this.platforms = null
+    this.canvas = null
+    this.cursors = null
   }
 
   preload () {
-    this.load.image('logo', logoImg)
+    this.canvas = this.sys.game.canvas
     this.load.image('bg', bg)
+
+    // this.spaceship = new SpaceChip({ scene: this, x: 100, y: 100 })
+    SpaceChip.preload(this)
   }
 
   create () {
-    //  A simple background for our game
-    this.add.image(400, 300, 'bg')
-    // const logo = this.add.image(400, 150, "logo");
+    this.bg = this.add.tileSprite(this.canvas.width / 2, this.canvas.height / 2, this.canvas.width, this.canvas.height, 'bg')
 
-    // this.tweens.add({
-    //   targets: logo,
-    //   y: 450,
-    //   duration: 500,
-    //   ease: "Power2",
-    //   yoyo: true,
-    //   loop: -1
-    // });
+    this.cursors = this.input.keyboard.createCursorKeys()
+
+    this.ss = new SpaceChip({ scene: this, y: 0 })
   }
 
   update () {
-    // constant running loop
+    this.bg.tilePositionY -= 0.5
+
+    if (this.cursors.up.isDown) {
+      console.log(this.cursors.up.timeUp)
+      if (this.cursors.left.isDown) {
+        this.ss.turnLeft()
+      } else if (this.cursors.right.isDown) {
+        this.ss.turnRight()
+      } else {
+        if (this.cursors.up.getDuration() < 1500) { this.ss.powerOn() } else { this.ss.powerOff() }
+      }
+    } else if (this.cursors.left.isDown) {
+      this.ss.turnLeft()
+    } else if (this.cursors.right.isDown) {
+      this.ss.turnRight()
+    } else {
+      this.ss.powerOff()
+    }
+  }
+
+  loadSpriteSheet (C) {
+    console.log(C, C.key, C.ss, { frameWidth: C.frameWidth, frameHeight: C.frameHeight })
+    // this.load.spritesheet(C.key, C.ss, { frameWidth: C.frameWidth, frameHeight: C.frameHeight })
   }
 }

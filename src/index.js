@@ -1,22 +1,23 @@
-import Phaser from "phaser";
-import Main from "./scenes/Main";
+import Phaser from 'phaser'
+import Main from './scenes/Main'
 
 const config = {
   type: Phaser.AUTO,
-  parent: "phaser-example",
+  parent: 'phaser-example',
   width: 800,
   height: 600,
-  scene: [Main], 
+  scene: [Main],
   physics: {
-      default: 'arcade',
-      arcade: {
-          gravity: { y: 300 },
-          debug: false
-      }
-  },
-};
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 60 },
+      debug: false
+    }
+  }
+}
 
-const game = new Phaser.Game(config);
+// eslint-disable-next-line no-unused-vars
+globalThis.game = new Phaser.Game(config)
 
 // function preload() {
 //   this.load.image("logo", logoImg);
